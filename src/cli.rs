@@ -1,0 +1,27 @@
+use clap::{crate_authors, crate_version, App, Arg, SubCommand, AppSettings};
+
+pub(crate) fn build() -> App<'static, 'static> {
+    App::new("cargo-msrv-table")
+        .version(crate_version!())
+        .author(crate_authors!())
+        .bin_name("cargo")
+        .settings(&[AppSettings::GlobalVersion, AppSettings::SubcommandRequired])
+        .subcommand(SubCommand::with_name("msrv-table")
+            .about("Generate a markdown table of Minimum Supported Rust Version by crate MAJOR.MINOR version")
+            .after_help("All occurrences of VER are in SemVer format without pre-release tags (i.e. x.y.z, x.y, or x)")
+            .arg(Arg::from_usage("<CRATE> 'The crate to generate a table for'"))// " (default: current crate)'"))
+            .arg(Arg::from_usage("--no-eager-end 'Do not stop traversing Rust versions after first failed compilation'"))
+            .arg(Arg::from_usage("--rust-order [ORDER] 'Traverse Rust versions in ORDER'").default_value("ascending").possible_values(&["ascending", "descending"]))
+            .arg(Arg::from_usage("--crate-order [ORDER] 'Traverse CRATE versions in ORDER'").default_value("descending").possible_values(&["ascending", "descending"]))
+            .arg(Arg::from_usage("--timeout [SECS] 'Use a timeout of SECS before skipping compilation as failed'"))
+            .arg(Arg::from_usage("--no-skip-pre-releases 'Disable skipping CRATE versions where x < 1 (in x.y.z)'").alias("--no-skip-prerelease"))
+            // .arg(Arg::from_usage("--rust-ver-start [VER] 'Start from Rust version VER'").alias("--rust-ver-begin"))
+            // .arg(Arg::from_usage("--rust-ver-end [VER] 'stop at Rust version VER'").alias("--rust-ver-stop"))
+            // .arg(Arg::from_usage("--crate-ver-start [VER] 'Start from CRATE version VER'").alias("--crate-ver-begin"))
+            // .arg(Arg::from_usage("--crate-ver-end [VER] 'Stop at CRATE version VER'").alias("--crate-ver-stop"))
+            // .arg(Arg::from_usage("--only-crate-ver [VER] 'Only check CRATE version VER'"))
+            // .arg(Arg::from_usage("--only-rust-ver [VER] 'Only check Rust version VER'"))
+            // .arg(Arg::from_usage("--skip-rust-ver [VER] 'Skip checking for Rust version VER'"))
+            // .arg(Arg::from_usage("--skip-crate-ver [VER] 'Skip checking for CRATE version VER'"))
+        )
+}
