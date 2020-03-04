@@ -5,8 +5,8 @@
 **If you're interested in fostering this into a real subcommand, contact me.**
 
 A [`cargo`](https://github.com/rust-lang/cargo) subcommand to generate a
-Makrdown table of Minimum Supported Rust Version by crate MAJOR.MINOR version
-(in Semver terminology)
+table of Minimum Supported Rust Version by crate `MAJOR.MINOR` version
+(in [SemVer](https://semver.org) terminology)
 
 ## Pre-requisits
 
@@ -33,6 +33,37 @@ Future versions of this subcommand may allow filtering those versions down to
 fewer numbers by skipping versions, or limiting ranges.
 
 This subcommand also downlods a large ammount of data (all stable Rust version).
+
+## Considerations
+
+By default this subcommand will try to build all published
+`MAJOR.MINOR.MAX_PATCH` versions of a crate against each stable Rust compiler
+(`1.MINOR.MAX_PATCH`).
+
+### PreReleases
+
+It skips pre-release (`<=0.y.z`) unless `--no-skip-prereleases` is used.
+
+### Eager Ending
+
+By default Rust versions are traversed in *ascending* order, and will end
+traversal once a successful build is found. However, if you choose to use
+`--rust-order=descending` you may also want to disable this eagerness to avoid a
+false positive. This can be disabled by using `--no-eager-end` which will 
+continue to build against earlier Rust versions even after a failed build.
+
+### Timeouts
+
+A timeout can be supplied for the `cargo build` command which will consider a
+build failed after `N` seconds. This is useful for early builds that may hang.
+
+### `cargo` features
+
+There is no consideration for cargo features
+
+### Target Platform
+
+There is no consideration for target platform
 
 ## License
 
