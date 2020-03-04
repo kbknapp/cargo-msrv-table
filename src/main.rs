@@ -194,6 +194,8 @@ fn traverse(cfg: &Config, crate_vers: &[&str]) {
 
     println!();
     println!();
+    println!("{}\tMSRV", cfg.tgt_crate);
+    println!("===\t===");
     for (cv, min_rv) in results {
         if let Some(rv) = min_rv {
             println!("{}\t{}", cv, rv);
